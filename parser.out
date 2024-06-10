@@ -1,0 +1,233 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    DOT
+    EQUALS
+    NUMBER
+    PLUS
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PACKAGE IDENTIFIER SEMICOLON import_decls func_decls
+Rule 2     import_decls -> IMPORT STRING SEMICOLON
+Rule 3     func_decls -> FUNC MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
+Rule 4     stmt_list -> stmt_list stmt
+Rule 5     stmt_list -> stmt
+Rule 6     stmt -> FMT_PRINTLN LPAREN STRING RPAREN SEMICOLON
+
+Terminals, with rules where they appear
+
+DOT                  : 
+EQUALS               : 
+FMT_PRINTLN          : 6
+FUNC                 : 3
+IDENTIFIER           : 1
+IMPORT               : 2
+LBRACE               : 3
+LPAREN               : 3 6
+MAIN                 : 3
+NUMBER               : 
+PACKAGE              : 1
+PLUS                 : 
+RBRACE               : 3
+RPAREN               : 3 6
+SEMICOLON            : 1 2 6
+STRING               : 2 6
+error                : 
+
+Nonterminals, with rules where they appear
+
+func_decls           : 1
+import_decls         : 1
+program              : 0
+stmt                 : 4 5
+stmt_list            : 3 4
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PACKAGE IDENTIFIER SEMICOLON import_decls func_decls
+
+    PACKAGE         shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PACKAGE . IDENTIFIER SEMICOLON import_decls func_decls
+
+    IDENTIFIER      shift and go to state 3
+
+
+state 3
+
+    (1) program -> PACKAGE IDENTIFIER . SEMICOLON import_decls func_decls
+
+    SEMICOLON       shift and go to state 4
+
+
+state 4
+
+    (1) program -> PACKAGE IDENTIFIER SEMICOLON . import_decls func_decls
+    (2) import_decls -> . IMPORT STRING SEMICOLON
+
+    IMPORT          shift and go to state 6
+
+    import_decls                   shift and go to state 5
+
+state 5
+
+    (1) program -> PACKAGE IDENTIFIER SEMICOLON import_decls . func_decls
+    (3) func_decls -> . FUNC MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
+
+    FUNC            shift and go to state 8
+
+    func_decls                     shift and go to state 7
+
+state 6
+
+    (2) import_decls -> IMPORT . STRING SEMICOLON
+
+    STRING          shift and go to state 9
+
+
+state 7
+
+    (1) program -> PACKAGE IDENTIFIER SEMICOLON import_decls func_decls .
+
+    $end            reduce using rule 1 (program -> PACKAGE IDENTIFIER SEMICOLON import_decls func_decls .)
+
+
+state 8
+
+    (3) func_decls -> FUNC . MAIN LPAREN RPAREN LBRACE stmt_list RBRACE
+
+    MAIN            shift and go to state 10
+
+
+state 9
+
+    (2) import_decls -> IMPORT STRING . SEMICOLON
+
+    SEMICOLON       shift and go to state 11
+
+
+state 10
+
+    (3) func_decls -> FUNC MAIN . LPAREN RPAREN LBRACE stmt_list RBRACE
+
+    LPAREN          shift and go to state 12
+
+
+state 11
+
+    (2) import_decls -> IMPORT STRING SEMICOLON .
+
+    FUNC            reduce using rule 2 (import_decls -> IMPORT STRING SEMICOLON .)
+
+
+state 12
+
+    (3) func_decls -> FUNC MAIN LPAREN . RPAREN LBRACE stmt_list RBRACE
+
+    RPAREN          shift and go to state 13
+
+
+state 13
+
+    (3) func_decls -> FUNC MAIN LPAREN RPAREN . LBRACE stmt_list RBRACE
+
+    LBRACE          shift and go to state 14
+
+
+state 14
+
+    (3) func_decls -> FUNC MAIN LPAREN RPAREN LBRACE . stmt_list RBRACE
+    (4) stmt_list -> . stmt_list stmt
+    (5) stmt_list -> . stmt
+    (6) stmt -> . FMT_PRINTLN LPAREN STRING RPAREN SEMICOLON
+
+    FMT_PRINTLN     shift and go to state 17
+
+    stmt_list                      shift and go to state 15
+    stmt                           shift and go to state 16
+
+state 15
+
+    (3) func_decls -> FUNC MAIN LPAREN RPAREN LBRACE stmt_list . RBRACE
+    (4) stmt_list -> stmt_list . stmt
+    (6) stmt -> . FMT_PRINTLN LPAREN STRING RPAREN SEMICOLON
+
+    RBRACE          shift and go to state 18
+    FMT_PRINTLN     shift and go to state 17
+
+    stmt                           shift and go to state 19
+
+state 16
+
+    (5) stmt_list -> stmt .
+
+    RBRACE          reduce using rule 5 (stmt_list -> stmt .)
+    FMT_PRINTLN     reduce using rule 5 (stmt_list -> stmt .)
+
+
+state 17
+
+    (6) stmt -> FMT_PRINTLN . LPAREN STRING RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 20
+
+
+state 18
+
+    (3) func_decls -> FUNC MAIN LPAREN RPAREN LBRACE stmt_list RBRACE .
+
+    $end            reduce using rule 3 (func_decls -> FUNC MAIN LPAREN RPAREN LBRACE stmt_list RBRACE .)
+
+
+state 19
+
+    (4) stmt_list -> stmt_list stmt .
+
+    RBRACE          reduce using rule 4 (stmt_list -> stmt_list stmt .)
+    FMT_PRINTLN     reduce using rule 4 (stmt_list -> stmt_list stmt .)
+
+
+state 20
+
+    (6) stmt -> FMT_PRINTLN LPAREN . STRING RPAREN SEMICOLON
+
+    STRING          shift and go to state 21
+
+
+state 21
+
+    (6) stmt -> FMT_PRINTLN LPAREN STRING . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 22
+
+
+state 22
+
+    (6) stmt -> FMT_PRINTLN LPAREN STRING RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 23
+
+
+state 23
+
+    (6) stmt -> FMT_PRINTLN LPAREN STRING RPAREN SEMICOLON .
+
+    RBRACE          reduce using rule 6 (stmt -> FMT_PRINTLN LPAREN STRING RPAREN SEMICOLON .)
+    FMT_PRINTLN     reduce using rule 6 (stmt -> FMT_PRINTLN LPAREN STRING RPAREN SEMICOLON .)
+
