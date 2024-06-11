@@ -5,8 +5,8 @@ app = Flask(__name__)
 
 # Conjuntos de palabras reservadas y símbolos para Go
 reserved_words = {'package', 'import', 'func', 'main', 'fmt', 'Println'}
-symbols = {';', '"', '+', '=', ',', '{', '}', '(', ')', '.'}
-identifiers = {'fmt', 'Hola', 'mundo'}
+symbols = {';', '+', '=', ',', '{', '}', '(', ')', '.'}
+identifiers = {'fmt'}
 
 def analyze_code(code):
     lines = code.split('\n')
@@ -27,8 +27,8 @@ def analyze_code(code):
     }
 
     for i, line in enumerate(lines, start=1):
-        # Utilizar expresiones regulares para encontrar palabras y símbolos
-        words = re.findall(r'\b\w+\b|[\(\){};"+=,.]', line)
+        # Utilizar expresiones regulares para encontrar palabras y símbolos, incluyendo cadenas de texto
+        words = re.findall(r'".*?"|\b\w+\b|[\(\){};"+=,.]', line)
         for word in words:
             token = {
                 'token': word,
@@ -40,14 +40,14 @@ def analyze_code(code):
                 'left_brace': 'x' if word == '{' else '',
                 'right_brace': 'x' if word == '}' else '',
                 'number': 'x' if word.isdigit() else '',
-                'identifier': 'x' if word in identifiers else '',
+                'identifier': 'x' if word in identifiers or re.match(r'".*?"', word) else '',
                 'lexical_error': ''
             }
 
             # Verificar si hay errores léxicos
             if not any([word in reserved_words, word in symbols,
                         word == '(', word == ')', word == '{', word == '}',
-                        word.isdigit(), word in identifiers]):
+                        word.isdigit(), word in identifiers, re.match(r'".*?"', word)]):
                 token['lexical_error'] = 'x'
                 counts['lexical_errors'] += 1
                 errors.append({'line': i, 'error': f'Illegal character or token: {word}'})
